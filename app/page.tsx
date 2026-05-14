@@ -5,7 +5,7 @@ import Script from "next/script";
 export default function Home() {
   return (
     <>
-      {/* Login Section */}
+      {/* Auth Section */}
       <div id="loginSection" className="login-container">
         <div className="login-box">
           <div className="login-header">
@@ -16,22 +16,43 @@ export default function Home() {
             <p>Manage Your Money Wisely</p>
           </div>
 
-          <form id="loginForm" className="login-form">
+          {/* Auth Toggle */}
+          <div className="auth-toggle">
+            <button
+              type="button"
+              id="loginTabBtn"
+              className="tab-btn active"
+              data-tab="login"
+            >
+              Login
+            </button>
+            <button
+              type="button"
+              id="signupTabBtn"
+              className="tab-btn"
+              data-tab="signup"
+            >
+              Sign Up
+            </button>
+          </div>
+
+          {/* Login Form */}
+          <form id="loginForm" className="login-form auth-form active">
             <div className="form-group">
-              <label htmlFor="email">Email Address</label>
+              <label htmlFor="loginEmail">Email Address</label>
               <input
                 type="email"
-                id="email"
+                id="loginEmail"
                 placeholder="student@example.com"
                 required
               />
             </div>
 
             <div className="form-group">
-              <label htmlFor="password">Password</label>
+              <label htmlFor="loginPassword">Password</label>
               <input
                 type="password"
-                id="password"
+                id="loginPassword"
                 placeholder="Enter your password"
                 required
               />
@@ -42,8 +63,48 @@ export default function Home() {
             </button>
 
             <p className="login-hint">
-              Demo: Use any email and password (e.g.,
-              student@example.com / password123)
+              Don&apos;t have an account? Click &quot;Sign Up&quot; to create one!
+            </p>
+          </form>
+
+          {/* Signup Form */}
+          <form id="signupForm" className="signup-form auth-form">
+            <div className="form-group">
+              <label htmlFor="signupEmail">Email Address</label>
+              <input
+                type="email"
+                id="signupEmail"
+                placeholder="student@example.com"
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="signupPassword">Password</label>
+              <input
+                type="password"
+                id="signupPassword"
+                placeholder="Create a strong password"
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="signupConfirmPassword">Confirm Password</label>
+              <input
+                type="password"
+                id="signupConfirmPassword"
+                placeholder="Confirm your password"
+                required
+              />
+            </div>
+
+            <button type="submit" className="btn btn-primary btn-full">
+              Sign Up
+            </button>
+
+            <p className="login-hint">
+              Already have an account? Click &quot;Login&quot; to sign in!
             </p>
           </form>
         </div>
