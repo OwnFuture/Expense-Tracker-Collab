@@ -25,8 +25,13 @@ setTimeout(() => {
 }, 100)
 
 function setupEventListeners() {
-  // Login
+  // Auth tabs
+  document.getElementById("loginTabBtn").addEventListener("click", switchAuthTab)
+  document.getElementById("signupTabBtn").addEventListener("click", switchAuthTab)
+
+  // Login & Signup
   document.getElementById("loginForm").addEventListener("submit", handleLogin)
+  document.getElementById("signupForm").addEventListener("submit", handleSignup)
   document.getElementById("logoutBtn").addEventListener("click", handleLogout)
 
   // Navigation
@@ -60,11 +65,37 @@ function setDefaultDate() {
   document.getElementById("transDate").valueAsDate = today
 }
 
+// Auth Tab Switching
+function switchAuthTab(e) {
+  const tab = e.target.getAttribute("data-tab")
+  
+  // Update button active state
+  document.querySelectorAll(".tab-btn").forEach(btn => {
+    btn.classList.remove("active")
+  })
+  e.target.classList.add("active")
+  
+  // Update form visibility
+  document.querySelectorAll(".auth-form").forEach(form => {
+    form.classList.remove("active")
+  })
+  
+  if (tab === "login") {
+    document.getElementById("loginForm").classList.add("active")
+    // Clear signup form
+    document.getElementById("signupForm").reset()
+  } else if (tab === "signup") {
+    document.getElementById("signupForm").classList.add("active")
+    // Clear login form
+    document.getElementById("loginForm").reset()
+  }
+}
+
 // Login/Logout
 async function handleLogin(e) {
   e.preventDefault()
-  const email = document.getElementById("email").value
-  const password = document.getElementById("password").value
+  const email = document.getElementById("loginEmail").value
+  const password = document.getElementById("loginPassword").value
 
   if (email && password) {
     try {
@@ -105,6 +136,61 @@ async function handleLogin(e) {
   }
 }
 
+async function handleSignup(e) {
+  e.preventDefault()
+  const email = document.getElementById("signupEmail").value
+  const password = document.getElementById("signupPassword").value
+  const confirmPassword = document.getElementById("signupConfirmPassword").value
+
+  // Validate passwords match
+  if (password !== confirmPassword) {
+    showNotification("Passwords do not match!", "error")
+    return
+  }
+
+  // Validate password strength
+  if (password.length < 6) {
+    showNotification("Password must be at least 6 characters long!", "error")
+    return
+  }
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/auth`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        password,
+        action: 'signup',
+      }),
+    })
+
+    const data = await response.json()
+
+    if (!response.ok) {
+      showNotification(data.error || 'Signup failed', 'error')
+      return
+    }
+
+    // Store user data and token
+    appState.currentUser = data.user
+    appState.token = data.token
+    document.getElementById("userName").textContent = appState.currentUser.name
+    
+    // Save to localStorage for persistence
+    saveToLocalStorage()
+    
+    showNotification("Account created successfully! Welcome!", "success")
+    showDashboard()
+    loadTransactions()
+  } catch (error) {
+    console.error('Signup error:', error)
+    showNotification('An error occurred during signup', 'error')
+  }
+}
+
 function handleLogout() {
   if (confirm("Are you sure you want to logout?")) {
     appState.currentUser = null
@@ -112,8 +198,14 @@ function handleLogout() {
     appState.transactions = []
     localStorage.removeItem("appState")
     showLoginSection()
-    // Clear the form
+    // Clear the forms
     document.getElementById("loginForm").reset()
+    document.getElementById("signupForm").reset()
+    // Reset to login tab
+    document.getElementById("loginTabBtn").classList.add("active")
+    document.getElementById("signupTabBtn").classList.remove("active")
+    document.getElementById("loginForm").classList.add("active")
+    document.getElementById("signupForm").classList.remove("active")
     showNotification("Logged out successfully!", "success")
   }
 }
