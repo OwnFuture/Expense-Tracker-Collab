@@ -1,4 +1,7 @@
-Student Expense Tracker is a full-stack web application designed to help students manage their personal finances by tracking income and expenses in a simple and organized way.
+
+
+Together, these modules create a user-friendly and reliable system that promotes financial awareness, encourages responsible spending, and assists students in developing effective money management habits. By providing accurate record-keeping, real-time calculations, visual reporting, and secure account management, the Student Expense Tracker System serves as a practical tool for improving personal financial planning and achieving long-term financial stability.
+s a full-stack web application designed to help students manage their personal finances by tracking income and expenses in a simple and organized way.
 
 Key Features
 User Registration (Sign Up) with email and password
