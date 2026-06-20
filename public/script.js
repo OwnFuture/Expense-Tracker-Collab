@@ -285,7 +285,7 @@ function calculateTotals(transactions) {
     }
   })
 
-  const remaining = totalIncome - totalCost
+  const remaining = appState.budget - totalCost
 
   document.getElementById("totalCost").textContent = totalCost.toFixed(2)
   document.getElementById("totalIncome").textContent = totalIncome.toFixed(2)
