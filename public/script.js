@@ -7,6 +7,8 @@ let appState = {
   token: null,
 }
 
+// application changed
+
 // API Base URL
 const API_BASE_URL = '/api';
 
@@ -690,5 +692,6 @@ async function loadBudget() {
     console.error('Load budget error:', error)
   }
 }
+// load budget edited
 
 
